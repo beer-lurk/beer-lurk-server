@@ -1,7 +1,10 @@
 import json
 import urllib
+import re
 
 KEY = r'f9a98378-b97f-4ef8-a5e4-d9ec01ac110c%3A3VcrY4Nkm2OAg%2BOcknCmV00wDu1cdczgNLMzpBQzEHBDgRVflrrjqzD8hj3wN1orx81xb0En9%2BhcfqGTZBqlcQ%3D%3D'
+
+
 
 def get_stats(posts, stats={}):
     for s in posts:
@@ -30,11 +33,28 @@ def get_posts(url):
     
     return posts
 
-def find_beer(posts, beer):
-    pass
+
+
+def find_beer(posts_per_store, beer):
+    stores = []
+    
+    def _find_in_posts(store, posts):
+        for p in posts:
+            # remember the store if it mentioned the beer in any post
+            if re.findall(re.escape(beer), p) > 0:
+                stores.append(store)
+                return
+    
+    for store, posts in posts_per_store.iteritems():
+        _find_in_posts(store, posts)
+                
+    return stores
+                
 
 def get_beer_stores(beer):
     pass
+
+
 
 def test():
     posts = get_posts(r'http://www.browar.biz/forum/showthread.php?t=111581')
