@@ -8,7 +8,7 @@ from sys import argv
 
 if __name__ == "__main__":
     # prep data
-    _posts = scrape.get_all_posts()
+    _posts = []
 
     # set up search route
     @_route('/find/<beer>')
