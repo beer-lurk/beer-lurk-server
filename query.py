@@ -2,7 +2,7 @@ import json
 import re
 
 
-def find_beer(posts_per_store, beer):
+def find_beer(all_posts, beer):
     stores = []
     beer = re.escape(beer)
     
@@ -14,11 +14,7 @@ def find_beer(posts_per_store, beer):
                 stores.append(store)
                 return
     
-    for store, posts in posts_per_store.iteritems():
+    for store, url, posts in all_posts:
         _find_in_posts(store, posts)
         
     return stores
-                
-
-def get_beer_stores(beer):
-    pass
