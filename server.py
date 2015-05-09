@@ -1,27 +1,19 @@
 import sys
-import BaseHTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
 import scrape
+from bottle import run as _run, route as _route
 import query
+import json
 
 
-class Server:
-    def __init__(self):
-        HandlerClass = SimpleHTTPRequestHandler
-        ServerClass  = BaseHTTPServer.HTTPServer
-        Protocol     = "HTTP/1.0"
+# prep data
+_posts_per_store = scrape.get_all_posts()
 
-        server_address = ('127.0.0.1', 8000)
+# config the server
+@_route('/find/<beer>')
+def find_stores(beer):
+    stores = query.find_beer(_posts_per_store, beer)
+    
+    return json.dumps(stores)
 
-        print 'Creating a server...'
-        HandlerClass.protocol_version = Protocol
-        self._server = ServerClass(server_address, HandlerClass)
-        print '...done'
-        
-        self._posts_per_store = scrape.get_all_posts()
-
-    def run():
-        sa = self._server.socket.getsockname()
-        print "Serving HTTP on", sa[0], "port", sa[1], "..."
-        
-        self._server.serve_forever()
+# run the server
+_run(host='0.0.0.0', port=8080)

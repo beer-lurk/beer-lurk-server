@@ -14,7 +14,7 @@ def get_posts_in_thread(url):
     j = json.loads(urllib.urlopen(request).read())
     
     if 'results' not in j:
-        raise Exception('No results: ', j)
+        raise Exception(j)
     
     # fetch posts
     op = j['results'][0]['thead_value']
@@ -39,7 +39,10 @@ def get_all_posts():
         url = r['shop']
         
         print 'Fetching posts for the shop %d of %d: \'%s\'...' % (1+idx, num_threads, name)
-        posts_per_store[name] = get_posts_in_thread(url)
-        print '...done'
+        try:
+            posts_per_store[name] = get_posts_in_thread(url)
+            print '...done'
+        except e:
+            print '  FAILED'
         
     return posts_per_store
