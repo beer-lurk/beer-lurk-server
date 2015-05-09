@@ -5,17 +5,6 @@ import re
 KEY = r'f9a98378-b97f-4ef8-a5e4-d9ec01ac110c%3A3VcrY4Nkm2OAg%2BOcknCmV00wDu1cdczgNLMzpBQzEHBDgRVflrrjqzD8hj3wN1orx81xb0En9%2BhcfqGTZBqlcQ%3D%3D'
 
 
-
-def get_stats(posts, stats={}):
-    for s in posts:
-        words = re.sub(r'[,\.\-:\(\)\[\]]', '', s, re.UNICODE).replace('\n', ' ').split(' ')
-        for w in words:
-            if w not in stats:
-                stats[w] = 1
-            else:
-                stats[w] += 1
-    return stats
-
 def get_posts_in_thread(url):
     # form the request
     url = urllib.quote(url)
@@ -52,32 +41,5 @@ def get_all_posts():
         print 'Fetching posts for the shop %d of %d: \'%s\'...' % (1+idx, num_threads, name)
         posts_per_store[name] = get_posts_in_thread(url)
         print '...done'
-
-
-
-def find_beer(posts_per_store, beer):
-    stores = []
-    
-    def _find_in_posts(store, posts):
-        for p in posts:
-            # remember the store if it mentioned the beer in any post
-            if re.findall(re.escape(beer), p) > 0:
-                stores.append(store)
-                return
-    
-    for store, posts in posts_per_store.iteritems():
-        _find_in_posts(store, posts)
-                
-    return stores
-                
-
-def get_beer_stores(beer):
-    pass
-
-
-
-def test():
-    posts = get_posts_in_thread(r'http://www.browar.biz/forum/showthread.php?t=111581')
-    stats = get_stats(posts)
-    print sorted(stats.items(), key=lambda x: x[1])
-
+        
+    return posts_per_store
