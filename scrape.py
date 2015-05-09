@@ -38,7 +38,7 @@ def get_all_posts():
         name = r['shop/_text']
         url = r['shop']
         
-        print u'Fetching posts for the shop %d of %d: \'%s\'...' % (1+idx, num_threads, name)
+        #print u'Fetching posts for the shop %d of %d: \'%s\'...' % (1+idx, num_threads, name)
         try:
             posts_per_store[name] = get_posts_in_thread(url)
             print '...done'
